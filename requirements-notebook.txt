@@ -1,0 +1,6 @@
+# Parte 1 — executar o notebook Jupyter localmente (além de requirements.txt)
+# Instalação: pip install -r requirements-notebook.txt
+ipykernel>=6.29.0
+jupyter>=1.0.0
+nbconvert>=7.16.0
+nbformat>=5.10.0

@@ -1,0 +1,54 @@
+# Constrói a imagem, executa pytest dentro do container e publica no GHCR.
+# Requer permissão "packages: write" no repositório (predefinido para GITHUB_TOKEN em workflows do mesmo repo).
+
+name: Docker — testes na imagem e publicação (GHCR)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-test-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Nome da imagem (minúsculas, exigência GHCR)
+        id: meta
+        run: |
+          OWNER_LC=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          REPO_LC=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+          echo "image=${{ env.REGISTRY }}/${OWNER_LC}/${REPO_LC}" >> "$GITHUB_OUTPUT"
+
+      - name: Build (tag local para testes)
+        run: docker build -t cardioia:ci .
+
+      - name: Testes pytest na imagem publicada em build
+        run: |
+          docker run --rm cardioia:ci \
+            python -m pytest backend/tests agents/tests -q --tb=short
+
+      - name: Login no GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag e push (latest + SHA do commit)
+        run: |
+          IMAGE="${{ steps.meta.outputs.image }}"
+          docker tag cardioia:ci "${IMAGE}:latest"
+          docker tag cardioia:ci "${IMAGE}:${{ github.sha }}"
+          docker push "${IMAGE}:latest"
+          docker push "${IMAGE}:${{ github.sha }}"
+          echo "Imagem publicada: ${IMAGE}:latest e ${IMAGE}:${{ github.sha }}"

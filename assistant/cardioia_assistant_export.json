@@ -1,0 +1,622 @@
+{
+  "name": "CardioIA - Assistente Cardiologico Educacional",
+  "language": "pt-br",
+  "description": "Assistente conversacional academico para orientacao educacional em saude cardiovascular. Fase 5 do projeto CardioIA - FIAP.",
+  "metadata": {
+    "api_version": {
+      "major_version": "v2"
+    }
+  },
+  "intents": [
+    {
+      "intent": "saudacao",
+      "description": "O usuario cumprimenta ou inicia a conversa.",
+      "examples": [
+        {"text": "Oi"},
+        {"text": "Ola"},
+        {"text": "Bom dia"},
+        {"text": "Boa tarde"},
+        {"text": "Boa noite"},
+        {"text": "Oi tudo bem"},
+        {"text": "Ola, preciso de ajuda"},
+        {"text": "Hey"},
+        {"text": "Oi, como funciona esse assistente?"},
+        {"text": "Bom dia, quero tirar uma duvida sobre o coracao"}
+      ]
+    },
+    {
+      "intent": "despedida",
+      "description": "O usuario encerra a conversa ou agradece.",
+      "examples": [
+        {"text": "Tchau"},
+        {"text": "Ate logo"},
+        {"text": "Obrigado"},
+        {"text": "Obrigada"},
+        {"text": "Valeu, era isso"},
+        {"text": "Muito obrigado pela ajuda, vou procurar um medico"},
+        {"text": "Entendi, obrigado pelas informacoes"},
+        {"text": "Pode encerrar, ja tirei minha duvida"},
+        {"text": "Brigado, vou marcar uma consulta"},
+        {"text": "Era so isso mesmo, obrigado"}
+      ]
+    },
+    {
+      "intent": "informar_dor_peito",
+      "description": "O usuario relata dor ou desconforto na regiao toracica.",
+      "examples": [
+        {"text": "Estou com dor no peito"},
+        {"text": "Sinto um aperto no peito"},
+        {"text": "Tenho uma pontada no peito"},
+        {"text": "Dor no peito ha 2 horas"},
+        {"text": "Quando subo escada sinto uma pressao no peito que vai passando quando paro"},
+        {"text": "Acordei de madrugada com uma queimacao no peito e fiquei preocupado"},
+        {"text": "Faz 3 dias que sinto um desconforto no peito do lado esquerdo quando faco esforco"},
+        {"text": "Doutor, toda vez que caminho rapido sinto um aperto no peito, sera que e grave?"},
+        {"text": "Sinto dor no peito quando respiro fundo, ja faz uns 2 dias"},
+        {"text": "Tive uma fisgada forte no peito agora e estou com medo"}
+      ]
+    },
+    {
+      "intent": "informar_palpitacao",
+      "description": "O usuario relata palpitacoes ou batimentos irregulares.",
+      "examples": [
+        {"text": "Estou com palpitacoes"},
+        {"text": "Meu coracao esta acelerado"},
+        {"text": "Sinto o coracao disparado"},
+        {"text": "Palpitacao leve ha uma semana"},
+        {"text": "Meu coracao fica acelerado do nada, mesmo parado no sofa"},
+        {"text": "As vezes sinto que meu coracao pula uma batida e da um susto"},
+        {"text": "Quando tomo cafe meu coracao dispara e demora pra voltar ao normal"},
+        {"text": "Faz uns dias que sinto uma batedeira no peito, principalmente a noite"},
+        {"text": "Meu coracao ta batendo muito rapido e eu nao fiz nada de esforco"},
+        {"text": "Sinto batimentos irregulares ha 2 dias, as vezes parece que falha"}
+      ]
+    },
+    {
+      "intent": "informar_falta_ar",
+      "description": "O usuario relata dificuldade respiratoria ou cansaco excessivo.",
+      "examples": [
+        {"text": "Estou com falta de ar"},
+        {"text": "Dificuldade para respirar"},
+        {"text": "Cansaco ao subir escadas"},
+        {"text": "Falta de ar quando deito"},
+        {"text": "Subo um lance de escada e ja fico ofegante, nao era assim antes"},
+        {"text": "A noite quando deito sinto falta de ar e preciso colocar mais travesseiro"},
+        {"text": "Qualquer esforco que faco fico sem folego, to preocupado"},
+        {"text": "Faz uma semana que sinto cansaco excessivo so de caminhar ate a padaria"},
+        {"text": "To com uma dispneia que nao passa, ate em repouso sinto"},
+        {"text": "Nao consigo mais fazer exercicio porque fico sufocado rapidamente"}
+      ]
+    },
+    {
+      "intent": "informar_tontura",
+      "description": "O usuario relata tontura, vertigem ou sensacao de desmaio.",
+      "examples": [
+        {"text": "Estou com tontura"},
+        {"text": "Sinto vertigem"},
+        {"text": "Quase desmaiei"},
+        {"text": "Tontura ao levantar rapido"},
+        {"text": "Quando levanto da cama de manha tudo escurece e quase caio"},
+        {"text": "Tive um desmaio ontem e estou preocupado, sera que e do coracao?"},
+        {"text": "Faz uns dias que sinto tontura forte quando me levanto da cadeira"},
+        {"text": "Durante o exercicio senti uma vertigem e tive que parar"},
+        {"text": "Tenho sentido tonturas frequentes e sensacao de que vou apagar"},
+        {"text": "Minha vista escureceu e senti que ia desmaiar no trabalho"}
+      ]
+    },
+    {
+      "intent": "informar_pressao",
+      "description": "O usuario menciona pressao arterial alta ou baixa.",
+      "examples": [
+        {"text": "Minha pressao esta alta"},
+        {"text": "Tenho hipertensao"},
+        {"text": "Pressao 18 por 10"},
+        {"text": "Pressao baixa"},
+        {"text": "Medi minha pressao agora e deu 17 por 9, ta muito alta ne?"},
+        {"text": "Minha pressao nao abaixa mesmo tomando remedio"},
+        {"text": "A pressao caiu muito e fiquei tonto, deu 9 por 6"},
+        {"text": "Faz anos que trato hipertensao mas ultimamente ta descontrolada"},
+        {"text": "Minha pressao vive subindo e descendo, nao consigo estabilizar"},
+        {"text": "Tomo losartana mas a pressao continua alta, o que pode ser?"}
+      ]
+    },
+    {
+      "intent": "informar_inchaco",
+      "description": "O usuario relata inchaco nas pernas, tornozelos ou pes.",
+      "examples": [
+        {"text": "Minhas pernas estao inchadas"},
+        {"text": "Inchaco nos tornozelos"},
+        {"text": "Meus pes estao muito inchados"},
+        {"text": "Edema nas pernas"},
+        {"text": "Faz uma semana que meus tornozelos estao inchando no final do dia"},
+        {"text": "Minhas pernas estao retendo liquido e ficam enormes a noite"},
+        {"text": "Quando aperto a canela fica a marca do dedo, ta muito inchado"},
+        {"text": "Meus pes incham tanto que nao consigo calcar sapato a tarde"},
+        {"text": "Sinto as pernas pesadas e inchadas, sera que e do coracao?"},
+        {"text": "Notei um inchaco nos pes que nao tinha antes, estou preocupado"}
+      ]
+    },
+    {
+      "intent": "informar_sintoma_geral",
+      "description": "O usuario descreve um sintoma de forma generica ou vaga.",
+      "examples": [
+        {"text": "Nao estou me sentindo bem"},
+        {"text": "Sinto dor"},
+        {"text": "Estou com um mal estar"},
+        {"text": "Tenho um desconforto"},
+        {"text": "Nao me sinto bem ha dias e nao sei o que e"},
+        {"text": "Estou sentindo algo estranho no peito mas nao sei explicar"},
+        {"text": "Me sinto mal e queria uma orientacao"},
+        {"text": "Tenho um incomodo que vai e volta e estou preocupado"},
+        {"text": "Meu corpo esta estranho, sinto um cansaco diferente do normal"},
+        {"text": "Estou com um sintoma preocupante e queria entender melhor"}
+      ]
+    },
+    {
+      "intent": "perguntar_ecg",
+      "description": "O usuario quer saber sobre eletrocardiograma.",
+      "examples": [
+        {"text": "O que e um ECG?"},
+        {"text": "Para que serve o eletrocardiograma?"},
+        {"text": "Como funciona o ECG?"},
+        {"text": "O ECG doi?"},
+        {"text": "Meu medico pediu um eletrocardiograma, o que esse exame faz?"},
+        {"text": "Preciso fazer ECG, precisa de algum preparo?"},
+        {"text": "O que o ECG detecta no coracao?"},
+        {"text": "Quanto tempo demora pra fazer um eletrocardiograma?"},
+        {"text": "Qual a diferenca entre ECG de repouso e de esforco?"},
+        {"text": "Fiz um ECG e deu alterado, o que isso pode significar?"}
+      ]
+    },
+    {
+      "intent": "perguntar_ecocardiograma",
+      "description": "O usuario quer saber sobre ecocardiograma.",
+      "examples": [
+        {"text": "O que e ecocardiograma?"},
+        {"text": "Para que serve o ecocardiograma?"},
+        {"text": "Ecocardiograma doi?"},
+        {"text": "Me explica o eco doppler"},
+        {"text": "Meu cardiologista pediu um eco, o que ele mostra?"},
+        {"text": "Qual a diferenca entre ECG e ecocardiograma?"},
+        {"text": "Preciso de jejum para fazer ecocardiograma?"},
+        {"text": "O ecocardiograma avalia as valvulas do coracao?"},
+        {"text": "Quanto tempo leva o exame de ecocardiograma?"},
+        {"text": "Vou fazer eco doppler, e a mesma coisa que ecocardiograma?"}
+      ]
+    },
+    {
+      "intent": "perguntar_holter",
+      "description": "O usuario quer saber sobre monitoramento Holter.",
+      "examples": [
+        {"text": "O que e o Holter?"},
+        {"text": "Como funciona o Holter 24 horas?"},
+        {"text": "Holter detecta arritmia?"},
+        {"text": "Me explica o exame Holter"},
+        {"text": "Tenho palpitacoes e o medico pediu Holter, como funciona?"},
+        {"text": "Posso tomar banho com o aparelho do Holter?"},
+        {"text": "Quanto tempo preciso ficar com o Holter?"},
+        {"text": "O Holter e desconfortavel pra dormir?"},
+        {"text": "Quando o medico costuma pedir o exame de Holter?"},
+        {"text": "O Holter monitora o coracao o dia inteiro mesmo?"}
+      ]
+    },
+    {
+      "intent": "perguntar_teste_ergometrico",
+      "description": "O usuario quer saber sobre teste ergometrico.",
+      "examples": [
+        {"text": "O que e teste ergometrico?"},
+        {"text": "Como funciona o teste de esforco?"},
+        {"text": "Teste na esteira para o coracao"},
+        {"text": "O teste ergometrico e perigoso?"},
+        {"text": "Vou fazer teste de esforco, preciso de algum preparo?"},
+        {"text": "Quanto tempo dura o teste ergometrico na esteira?"},
+        {"text": "Sinto dor no peito quando corro, o teste de esforco detecta isso?"},
+        {"text": "Posso fazer teste ergometrico se tenho pressao alta?"},
+        {"text": "O que o teste de esforco mostra sobre meu coracao?"},
+        {"text": "Me pediram teste ergometrico depois de uma dor no peito, por que?"}
+      ]
+    },
+    {
+      "intent": "perguntar_cateterismo",
+      "description": "O usuario quer saber sobre cateterismo cardiaco.",
+      "examples": [
+        {"text": "O que e cateterismo?"},
+        {"text": "Cateterismo e perigoso?"},
+        {"text": "Como funciona o cateterismo cardiaco?"},
+        {"text": "Cateterismo doi muito?"},
+        {"text": "Meu medico falou que preciso fazer cateterismo, estou com medo"},
+        {"text": "Quais os riscos do cateterismo cardiaco?"},
+        {"text": "O cateterismo pode desentupir a arteria na mesma hora?"},
+        {"text": "Quanto tempo de repouso depois do cateterismo?"},
+        {"text": "Quanto tempo dura o procedimento de cateterismo?"},
+        {"text": "Cateterismo e a mesma coisa que angioplastia?"}
+      ]
+    },
+    {
+      "intent": "perguntar_exame",
+      "description": "O usuario pergunta sobre exames cardiovasculares de forma generica.",
+      "examples": [
+        {"text": "Quais exames do coracao existem?"},
+        {"text": "Me fala sobre exames cardiacos"},
+        {"text": "Preciso fazer exames do coracao"},
+        {"text": "Quais exames o cardiologista costuma pedir?"},
+        {"text": "Que tipo de exame investiga problemas no coracao?"},
+        {"text": "To com dor no peito, que exames posso fazer?"},
+        {"text": "Meu medico quer investigar meu coracao, que exames existem?"},
+        {"text": "Lista de exames cardiovasculares disponiveis"},
+        {"text": "Quais sao os principais exames pra ver se o coracao ta bem?"},
+        {"text": "Que exames devo fazer pra investigar palpitacao?"}
+      ]
+    },
+    {
+      "intent": "solicitar_diagnostico",
+      "description": "O usuario pede um diagnostico ou confirmacao de doenca.",
+      "examples": [
+        {"text": "O que eu tenho?"},
+        {"text": "Qual e meu diagnostico?"},
+        {"text": "Me diz o que eu tenho"},
+        {"text": "Voce pode me diagnosticar?"},
+        {"text": "Com esses sintomas, qual minha doenca?"},
+        {"text": "Sera que eu to tendo um infarto? Me confirma"},
+        {"text": "Acho que tenho problema no coracao, voce pode confirmar?"},
+        {"text": "Meus sintomas indicam o que exatamente?"},
+        {"text": "Baseado no que falei, qual o diagnostico?"},
+        {"text": "Isso que eu sinto e arritmia? Me diz"}
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "entity": "sintoma",
+      "description": "Tipos de sintomas cardiovasculares relatados.",
+      "values": [
+        {"value": "dor_peito", "type": "synonyms", "synonyms": ["dor no peito", "dor toracica", "aperto no peito", "pontada no peito", "pressao no peito", "queimacao no peito", "fisgada no peito"]},
+        {"value": "palpitacao", "type": "synonyms", "synonyms": ["palpitacao", "coracao acelerado", "taquicardia", "batimento rapido", "coracao disparado", "batedeira", "coracao falhando"]},
+        {"value": "falta_ar", "type": "synonyms", "synonyms": ["falta de ar", "dispneia", "dificuldade para respirar", "cansaco", "fadiga", "sufocamento", "ofegante"]},
+        {"value": "tontura", "type": "synonyms", "synonyms": ["tontura", "vertigem", "desmaio", "sincope", "cabeca leve", "vista escureceu", "quase apaguei"]},
+        {"value": "pressao_alterada", "type": "synonyms", "synonyms": ["pressao alta", "hipertensao", "pressao baixa", "hipotensao", "pressao descontrolada"]},
+        {"value": "inchaco", "type": "synonyms", "synonyms": ["inchaco", "edema", "pernas inchadas", "pes inchados", "tornozelos inchados", "retencao de liquido"]},
+        {"value": "nausea", "type": "synonyms", "synonyms": ["nausea", "enjoo", "vontade de vomitar"]},
+        {"value": "suor_frio", "type": "synonyms", "synonyms": ["suor frio", "sudorese", "suando frio"]}
+      ]
+    },
+    {
+      "entity": "duracao",
+      "description": "Periodo de tempo que o sintoma persiste.",
+      "values": [
+        {"value": "minutos", "type": "synonyms", "synonyms": ["minutos", "poucos minutos", "alguns minutos", "agora ha pouco"]},
+        {"value": "horas", "type": "synonyms", "synonyms": ["horas", "algumas horas", "ha horas", "faz umas horas"]},
+        {"value": "dias", "type": "synonyms", "synonyms": ["dias", "ha dias", "alguns dias", "ha 2 dias", "ha 3 dias", "faz uns dias"]},
+        {"value": "semanas", "type": "synonyms", "synonyms": ["semanas", "ha semanas", "uma semana", "ha 2 semanas", "faz uma semana"]},
+        {"value": "meses", "type": "synonyms", "synonyms": ["meses", "ha meses", "alguns meses", "ha 1 mes", "faz meses"]}
+      ]
+    },
+    {
+      "entity": "intensidade",
+      "description": "Nivel de intensidade do sintoma relatado.",
+      "values": [
+        {"value": "leve", "type": "synonyms", "synonyms": ["leve", "fraco", "fraca", "suave", "sutil", "de leve", "levinho"]},
+        {"value": "moderada", "type": "synonyms", "synonyms": ["moderada", "moderado", "medio", "media", "mais ou menos"]},
+        {"value": "intensa", "type": "synonyms", "synonyms": ["intensa", "intenso", "forte", "severa", "severo", "aguda", "agudo", "muito forte", "demais"]}
+      ]
+    },
+    {
+      "entity": "exame",
+      "description": "Tipos de exames cardiovasculares.",
+      "values": [
+        {"value": "ecg", "type": "synonyms", "synonyms": ["ECG", "eletrocardiograma", "eletro"]},
+        {"value": "ecocardiograma", "type": "synonyms", "synonyms": ["ecocardiograma", "eco", "eco doppler", "ultrassom do coracao"]},
+        {"value": "holter", "type": "synonyms", "synonyms": ["holter", "holter 24h", "holter 24 horas", "monitor cardiaco"]},
+        {"value": "teste_ergometrico", "type": "synonyms", "synonyms": ["teste ergometrico", "teste de esforco", "esteira", "teste na esteira"]},
+        {"value": "cateterismo", "type": "synonyms", "synonyms": ["cateterismo", "cateterismo cardiaco", "angiografia", "angioplastia"]}
+      ]
+    }
+  ],
+  "dialog_nodes": [
+    {
+      "dialog_node": "node_welcome",
+      "type": "standard",
+      "title": "Boas-vindas",
+      "conditions": "welcome",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Ola! Sou o CardioIA, um assistente academico de apoio educacional em saude cardiovascular. Voce pode me contar seu principal sintoma, perguntar sobre exames ou tirar duvidas gerais. Lembre-se: este assistente nao realiza diagnostico e nao substitui avaliacao medica."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_saudacao",
+      "type": "standard",
+      "title": "Saudacao",
+      "previous_sibling": "node_welcome",
+      "conditions": "#saudacao",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Ola! Sou o CardioIA, um assistente academico de apoio educacional em saude cardiovascular. Voce pode me contar seu principal sintoma, perguntar sobre exames ou tirar duvidas gerais. Lembre-se: este assistente nao realiza diagnostico e nao substitui avaliacao medica."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_despedida",
+      "type": "standard",
+      "title": "Despedida",
+      "previous_sibling": "node_saudacao",
+      "conditions": "#despedida",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Obrigado por utilizar o CardioIA. Lembre-se: qualquer orientacao aqui e educacional. Para decisoes clinicas, consulte sempre um profissional de saude. Ate mais!"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_dor_peito",
+      "type": "standard",
+      "title": "Dor no peito",
+      "previous_sibling": "node_despedida",
+      "conditions": "#informar_dor_peito",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "A dor no peito pode ter diversas causas, desde muscular ate cardiovascular. Para fins educativos, e importante observar: localizacao exata, duracao, se irradia para braco ou mandibula, e se ha sintomas associados como falta de ar ou suor frio. Se a dor for intensa ou acompanhada desses sinais, procure atendimento medico imediatamente."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_palpitacao",
+      "type": "standard",
+      "title": "Palpitacao",
+      "previous_sibling": "node_dor_peito",
+      "conditions": "#informar_palpitacao",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Palpitacoes podem ser percebidas como batimentos acelerados, irregulares ou mais fortes. Para fins educativos, vale observar: frequencia dos episodios, duracao, gatilhos (cafeina, estresse, exercicio) e sintomas associados. Na maioria dos casos, palpitacoes isoladas e esporadicas nao indicam gravidade, mas um acompanhamento medico e sempre recomendado para investigacao adequada."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_falta_ar",
+      "type": "standard",
+      "title": "Falta de ar",
+      "previous_sibling": "node_palpitacao",
+      "conditions": "#informar_falta_ar",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "A falta de ar (dispneia) pode estar relacionada a causas pulmonares ou cardiovasculares. Observe se ocorre em repouso ou ao esforco, se piora ao deitar, e se ha sintomas associados como dor no peito ou inchacos. Caso a falta de ar seja intensa ou surgir subitamente, busque atendimento medico imediato."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_tontura",
+      "type": "standard",
+      "title": "Tontura",
+      "previous_sibling": "node_falta_ar",
+      "conditions": "#informar_tontura",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Tontura pode ter causas variadas, incluindo queda de pressao, arritmias ou desidratacao. Observe se ocorre ao levantar, durante esforco, ou se acompanhada de palpitacoes. Episodios de desmaio ou perda de consciencia exigem avaliacao medica urgente."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_pressao",
+      "type": "standard",
+      "title": "Pressao arterial",
+      "previous_sibling": "node_tontura",
+      "conditions": "#informar_pressao",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "A pressao arterial e um dos principais indicadores de saude cardiovascular. Valores de referencia para adultos: sistolica ate 120 mmHg e diastolica ate 80 mmHg. Hipertensao (pressao alta) e um fator de risco importante para eventos cardiovasculares. O monitoramento regular e o acompanhamento medico sao essenciais."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_inchaco",
+      "type": "standard",
+      "title": "Inchaco e edema",
+      "previous_sibling": "node_pressao",
+      "conditions": "#informar_inchaco",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "O inchaco (edema) nas pernas, tornozelos ou pes pode estar relacionado a problemas cardiovasculares como insuficiencia cardiaca, quando o coracao nao bombeia sangue de forma eficiente e ocorre acumulo de liquido. Observe se o inchaco piora ao longo do dia, se e acompanhado de falta de ar ou cansaco, e se ao pressionar a pele a marca permanece (sinal de cacifo). Esse sintoma merece acompanhamento medico para investigacao adequada."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_ecg",
+      "type": "standard",
+      "title": "ECG",
+      "previous_sibling": "node_inchaco",
+      "conditions": "#perguntar_ecg",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "O Eletrocardiograma (ECG) e um exame que registra a atividade eletrica do coracao. E rapido (dura cerca de 5 a 10 minutos), indolor e nao invasivo. Costuma ser solicitado para investigar arritmias, isquemia, infarto e outras alteracoes cardiacas. O exame usa eletrodos na pele do torax e membros para captar os sinais eletricos."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_ecocardiograma",
+      "type": "standard",
+      "title": "Ecocardiograma",
+      "previous_sibling": "node_ecg",
+      "conditions": "#perguntar_ecocardiograma",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "O Ecocardiograma e um exame de ultrassom do coracao que permite avaliar a estrutura e o funcionamento das camaras e valvulas cardiacas. E indolor, nao invasivo e frequentemente solicitado para investigar sopros, insuficiencia cardiaca e doencas valvulares. Nao requer jejum e dura cerca de 20 a 40 minutos."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_holter",
+      "type": "standard",
+      "title": "Holter",
+      "previous_sibling": "node_ecocardiograma",
+      "conditions": "#perguntar_holter",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "O Holter e um exame que monitora o ritmo cardiaco continuamente por 24 a 72 horas. Um pequeno aparelho e conectado ao corpo com eletrodos e registra todos os batimentos. E indicado para investigar palpitacoes, arritmias e episodios intermitentes de sintomas que nao aparecem no ECG convencional."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_teste_ergometrico",
+      "type": "standard",
+      "title": "Teste Ergometrico",
+      "previous_sibling": "node_holter",
+      "conditions": "#perguntar_teste_ergometrico",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "O Teste Ergometrico (teste de esforco) avalia o comportamento do coracao durante exercicio progressivo em esteira ou bicicleta. E utilizado para detectar isquemia, avaliar capacidade funcional e auxiliar na investigacao de dor toracica ao esforco. O exame e monitorado por um medico e pode ser interrompido a qualquer momento se necessario."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_cateterismo",
+      "type": "standard",
+      "title": "Cateterismo",
+      "previous_sibling": "node_teste_ergometrico",
+      "conditions": "#perguntar_cateterismo",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "O Cateterismo Cardiaco e um procedimento invasivo no qual um cateter fino e introduzido por uma arteria ate o coracao para avaliar as arterias coronarias. E indicado quando ha forte suspeita de doenca arterial coronariana e pode incluir angioplastia para desobstrucao no mesmo procedimento. Apesar de invasivo, e considerado seguro e realizado com anestesia local."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_exame_geral",
+      "type": "standard",
+      "title": "Exames gerais",
+      "previous_sibling": "node_cateterismo",
+      "conditions": "#perguntar_exame",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Os principais exames cardiovasculares incluem: ECG (eletrocardiograma), Ecocardiograma, Holter 24h, Teste Ergometrico e Cateterismo Cardiaco. Cada um investiga aspectos diferentes da saude do coracao. Voce pode me perguntar sobre qualquer um deles para mais detalhes."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_solicitar_diagnostico",
+      "type": "standard",
+      "title": "Limite - Solicitacao de diagnostico",
+      "previous_sibling": "node_exame_geral",
+      "conditions": "#solicitar_diagnostico",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Entendo sua preocupacao, mas este assistente nao tem capacidade de realizar diagnosticos. Minha funcao e estritamente educacional: posso orientar sobre sinais de alerta, explicar exames e sugerir que voce procure acompanhamento medico adequado. Para um diagnostico, consulte um cardiologista."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_sintoma_geral",
+      "type": "standard",
+      "title": "Sintoma generico",
+      "previous_sibling": "node_solicitar_diagnostico",
+      "conditions": "#informar_sintoma_geral",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Obrigado por compartilhar. Para que eu possa oferecer uma orientacao educacional mais precisa, poderia detalhar: qual o sintoma principal, ha quanto tempo ocorre, qual a intensidade e se ha outros sintomas associados?"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "dialog_node": "node_fallback",
+      "type": "standard",
+      "title": "Fallback",
+      "previous_sibling": "node_sintoma_geral",
+      "conditions": "anything_else",
+      "output": {
+        "generic": [
+          {
+            "response_type": "text",
+            "values": [
+              {"text": "Nao identifiquei com clareza o tema da sua mensagem. Voce pode me perguntar sobre sintomas cardiovasculares (dor no peito, palpitacoes, falta de ar, tontura, inchaco), exames (ECG, ecocardiograma, holter) ou orientacoes gerais de saude cardiaca. Como posso ajudar?"}
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

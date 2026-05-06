@@ -1,0 +1,16 @@
+{
+  "reply": "Palpitações podem ser percebidas como batimentos acelerados ou irregulares. Para fins educativos, vale observar frequência, duração, gatilhos e sintomas associados.",
+  "source": "fallback_local",
+  "urgency_detected": false,
+  "disclaimer": "Aviso: este assistente tem finalidade educacional e de triagem inicial simulada. Ele nao realiza diagnostico, nao prescreve medicamentos e nao substitui avaliacao medica.",
+  "conversation_id": "demo-conversa-001",
+  "detected_intents": [
+    "informar_palpitacao"
+  ],
+  "detected_entities": [
+    "sintoma",
+    "duracao",
+    "intensidade"
+  ],
+  "follow_up": "Modo demonstracao offline ativado."
+}

@@ -1,0 +1,45 @@
+# CardioIA — Flask + LocalStack (S3) para desenvolvimento local
+# Uso: docker compose up --build
+#
+# API: http://localhost:5000
+# LocalStack: http://localhost:4566
+# Logs de predição: cópia opcional para s3://cardioia-logs/ quando CARDIOIA_S3_LOG_BUCKET está definido
+
+services:
+  localstack:
+    image: localstack/localstack:3.8
+    ports:
+      - "4566:4566"
+    environment:
+      SERVICES: s3
+      DEBUG: "0"
+      LS_LOG: warn
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  web:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: "5000"
+      FLASK_DEBUG: "false"
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ENDPOINT_URL: http://localstack:4566
+      CARDIOIA_S3_LOG_BUCKET: cardioia-logs
+    depends_on:
+      localstack:
+        condition: service_healthy
+    command: ["sh", "-c", "python scripts/init_localstack_s3.py && python -m backend.app"]
+    volumes:
+      - ./agents/logs:/app/agents/logs

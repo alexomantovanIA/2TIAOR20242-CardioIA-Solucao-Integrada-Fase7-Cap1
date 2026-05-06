@@ -1,0 +1,45 @@
+{
+  "baixo": [
+    {
+      "protocol_id": "PROT-001",
+      "nome": "Monitoramento Ambulatorial",
+      "risk_level": "baixo",
+      "acoes": [
+        "Registrar sintomas diariamente em diário de saúde",
+        "Agendar consulta de retorno em 30 dias",
+        "Manter medicação vigente conforme prescrição",
+        "Praticar atividade física leve (caminhada 30 min/dia)",
+        "Monitorar pressão arterial 1x/semana"
+      ]
+    }
+  ],
+  "médio": [
+    {
+      "protocol_id": "PROT-002",
+      "nome": "Avaliação Cardiológica Urgente",
+      "risk_level": "médio",
+      "acoes": [
+        "Agendar consulta cardiológica em até 48 horas",
+        "Realizar ECG de controle",
+        "Monitorar pressão arterial 2x/dia (manhã e noite)",
+        "Evitar esforços físicos intensos até avaliação médica",
+        "Registrar e reportar qualquer novo sintoma imediatamente"
+      ]
+    }
+  ],
+  "alto": [
+    {
+      "protocol_id": "PROT-003",
+      "nome": "Protocolo de Emergência Cardíaca",
+      "risk_level": "alto",
+      "acoes": [
+        "Acionar SAMU imediatamente — ligue 192",
+        "Manter o paciente em repouso absoluto",
+        "Não oferecer alimentos ou líquidos",
+        "Solicitar ECG e dosagem de enzimas cardíacas com urgência",
+        "Preparar acesso venoso periférico",
+        "Monitorar sinais vitais continuamente até chegada do socorro"
+      ]
+    }
+  ]
+}

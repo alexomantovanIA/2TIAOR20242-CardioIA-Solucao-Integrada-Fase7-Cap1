@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CardioIA | Inteligência Cardíaca</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="app-nav">
+    <div class="nav-container">
+      <div class="brand">
+        <img src="/assets/logo-fiap.png" alt="Logo FIAP" class="nav-logo">
+        <div class="brand-text">
+          <span class="brand-eyebrow">Projeto Acadêmico</span>
+          <span class="brand-name">CardioIA</span>
+        </div>
+      </div>
+      <div class="nav-actions">
+        <button id="infoToggle" class="icon-button" aria-label="Informações do Projeto">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Info
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="app-container">
+    <!-- Journey Header -->
+    <header class="journey-header">
+      <div class="journey-progress-track" id="journeySteps">
+        <div class="journey-step is-active" data-stage="acolhimento">
+          <div class="step-dot"></div>
+          <span class="step-label">Acolhimento</span>
+        </div>
+        <div class="journey-step" data-stage="investigacao">
+          <div class="step-dot"></div>
+          <span class="step-label">Investigação</span>
+        </div>
+        <div class="journey-step" data-stage="orientacao">
+          <div class="step-dot"></div>
+          <span class="step-label">Orientação</span>
+        </div>
+        <div class="journey-step" data-stage="proximos-passos">
+          <div class="step-dot"></div>
+          <span class="step-label">Predição</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="chat-wrapper">
+      <section class="chat-canvas">
+        <div class="messages" id="messages">
+          <!-- Welcome message rendered via JS -->
+        </div>
+        
+        <div class="interaction-area">
+          <div id="quickPrompts" class="prompt-suggestions">
+            <button class="prompt-chip" data-prompt="Sinto palpitações leves há 2 dias.">Palpitações leves</button>
+            <button class="prompt-chip" data-prompt="O que é um ECG?">Explicar ECG</button>
+            <button class="prompt-chip" data-prompt="Dor intensa no peito e falta de ar.">Sinal de urgência</button>
+          </div>
+
+          <form class="composer-container" id="chatForm">
+            <div class="input-wrapper">
+              <textarea
+                id="messageInput"
+                placeholder="Descreva o que está sentindo..."
+                rows="1"
+                required
+              ></textarea>
+              <button type="submit" id="sendButton" class="send-button" aria-label="Enviar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+          </form>
+
+          <footer class="app-footer">
+            <div class="status-indicator" id="statusContainer">
+              <span class="status-dot" id="statusDot"></span>
+              <span id="statusBadge">Pronto</span>
+            </div>
+            <p class="disclaimer">Uso acadêmico. Em caso de emergência, ligue 192.</p>
+            <button id="clearButton" class="text-button">Limpar Conversa</button>
+          </footer>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Side Panel for Academic Info & Best Practices -->
+  <aside id="infoPanel" class="info-panel" hidden>
+    <div class="info-panel-content">
+      <header class="panel-header">
+        <h2>Detalhes do CardioIA</h2>
+        <button id="closeInfo" class="icon-button">&times;</button>
+      </header>
+      
+      <div class="panel-section">
+        <h3>Aderência FIAP (Fases 1-6)</h3>
+        <ul class="phase-list">
+          <li><strong>Fase 1:</strong> Base de dados consolidada.</li>
+          <li><strong>Fase 2:</strong> NLP e análise de risco inicial.</li>
+          <li><strong>Fase 3:</strong> Monitoramento via IoT (Simulado).</li>
+          <li><strong>Fase 4:</strong> Visão computacional para imagens.</li>
+          <li><strong>Fase 5:</strong> Assistente conversacional Watson.</li>
+          <li><strong>Fase 6:</strong> Predição multiagente avançada.</li>
+        </ul>
+      </div>
+
+      <div class="panel-section">
+        <h3>Escopo e Segurança</h3>
+        <p>Este assistente utiliza modelos de Machine Learning para identificar padrões de risco cardíaco com base em dados clínicos e relatos.</p>
+        <ul class="guidelines">
+          <li>Foco educacional e preventivo.</li>
+          <li>Triagem baseada em protocolos médicos.</li>
+          <li>Camada de segurança para sinais de urgência.</li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+  <script src="script.js"></script>
+</body>
+</html>

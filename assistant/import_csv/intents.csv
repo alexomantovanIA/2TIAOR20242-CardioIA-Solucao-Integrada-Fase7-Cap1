@@ -1,0 +1,150 @@
+Oi,saudacao
+Ola,saudacao
+Bom dia,saudacao
+Boa tarde,saudacao
+Boa noite,saudacao
+Oi tudo bem,saudacao
+"Ola, preciso de ajuda",saudacao
+Hey,saudacao
+"Oi, como funciona o assistente?",saudacao
+"Bom dia, quero tirar uma duvida",saudacao
+Tchau,despedida
+Adeus,despedida
+Ate logo,despedida
+Obrigado,despedida
+Obrigada,despedida
+Valeu,despedida
+"Era isso, obrigado",despedida
+Encerrar conversa,despedida
+Pode encerrar,despedida
+Muito obrigado pela ajuda,despedida
+Estou com dor no peito,informar_dor_peito
+Sinto um aperto no peito,informar_dor_peito
+Tenho uma pontada no peito,informar_dor_peito
+Dor toracica ha 2 horas,informar_dor_peito
+Pressao no peito ao caminhar,informar_dor_peito
+Desconforto no peito quando faco esforco,informar_dor_peito
+Dor no torax do lado esquerdo,informar_dor_peito
+Sinto dor no peito quando respiro fundo,informar_dor_peito
+Tenho sentido aperto no peito ha 3 dias,informar_dor_peito
+Queimacao no peito apos refeicao,informar_dor_peito
+Estou com palpitacoes,informar_palpitacao
+Meu coracao esta acelerado,informar_palpitacao
+Sinto o coracao disparado,informar_palpitacao
+Batimentos irregulares ha 2 dias,informar_palpitacao
+Taquicardia frequente,informar_palpitacao
+Palpitacao leve ha uma semana,informar_palpitacao
+Sinto o coracao batendo muito rapido,informar_palpitacao
+Meu coracao as vezes pula batidas,informar_palpitacao
+Coracao acelerado sem motivo,informar_palpitacao
+Sinto batimentos fortes no peito,informar_palpitacao
+Estou com falta de ar,informar_falta_ar
+Dificuldade para respirar,informar_falta_ar
+Cansaco ao subir escadas,informar_falta_ar
+Falta de folego ao caminhar,informar_falta_ar
+Dispneia ao fazer esforco,informar_falta_ar
+Fadiga constante,informar_falta_ar
+Nao consigo respirar direito,informar_falta_ar
+Fico ofegante rapidamente,informar_falta_ar
+Cansaco excessivo ao me esforcar,informar_falta_ar
+Falta de ar quando deito,informar_falta_ar
+Estou com tontura,informar_tontura
+Sinto vertigem,informar_tontura
+Quase desmaiei,informar_tontura
+Sensacao de cabeca leve,informar_tontura
+Tontura ao levantar rapido,informar_tontura
+Desmaio ontem,informar_tontura
+Sincope durante exercicio,informar_tontura
+Tenho sentido tonturas frequentes,informar_tontura
+Tudo roda quando levanto,informar_tontura
+Sensacao de que vou desmaiar,informar_tontura
+Minha pressao esta alta,informar_pressao
+Tenho hipertensao,informar_pressao
+Pressao arterial 18 por 10,informar_pressao
+Pressao baixa,informar_pressao
+Hipotensao frequente,informar_pressao
+Minha pressao subiu muito,informar_pressao
+Pressao descontrolada,informar_pressao
+Nao consigo controlar a pressao,informar_pressao
+Pressao arterial elevada,informar_pressao
+Tomo remedio para pressao e continua alta,informar_pressao
+O que e um ECG?,perguntar_ecg
+Para que serve o eletrocardiograma?,perguntar_ecg
+Como funciona o ECG?,perguntar_ecg
+Quando preciso fazer um ECG?,perguntar_ecg
+Quero entender o eletrocardiograma,perguntar_ecg
+Me explica o ECG,perguntar_ecg
+O ECG doi?,perguntar_ecg
+Quanto tempo demora um ECG?,perguntar_ecg
+Preciso de preparo para o ECG?,perguntar_ecg
+O que o ECG detecta?,perguntar_ecg
+O que e ecocardiograma?,perguntar_ecocardiograma
+Para que serve o ecocardiograma?,perguntar_ecocardiograma
+Como funciona o eco doppler?,perguntar_ecocardiograma
+Preciso fazer um ecocardiograma,perguntar_ecocardiograma
+Me explica o ecocardiograma,perguntar_ecocardiograma
+Qual a diferenca entre ECG e ecocardiograma?,perguntar_ecocardiograma
+Ecocardiograma doi?,perguntar_ecocardiograma
+Quanto tempo leva o ecocardiograma?,perguntar_ecocardiograma
+O que o ecocardiograma mostra?,perguntar_ecocardiograma
+Preciso de jejum para ecocardiograma?,perguntar_ecocardiograma
+O que e o Holter?,perguntar_holter
+Como funciona o Holter 24 horas?,perguntar_holter
+Para que serve o exame Holter?,perguntar_holter
+Holter e desconfortavel?,perguntar_holter
+Quanto tempo fica com o Holter?,perguntar_holter
+Me explica o exame Holter,perguntar_holter
+Posso dormir com o Holter?,perguntar_holter
+Holter detecta arritmia?,perguntar_holter
+Quando o medico pede Holter?,perguntar_holter
+Preciso de Holter para palpitacao?,perguntar_holter
+O que e teste ergometrico?,perguntar_teste_ergometrico
+Como funciona o teste de esforco?,perguntar_teste_ergometrico
+Teste na esteira para o coracao,perguntar_teste_ergometrico
+Para que serve o teste ergometrico?,perguntar_teste_ergometrico
+Preciso fazer teste de esforco,perguntar_teste_ergometrico
+O teste ergometrico e perigoso?,perguntar_teste_ergometrico
+Quanto tempo dura o teste ergometrico?,perguntar_teste_ergometrico
+Preciso de preparo para o teste de esforco?,perguntar_teste_ergometrico
+Me explica o teste na esteira,perguntar_teste_ergometrico
+O que o teste ergometrico detecta?,perguntar_teste_ergometrico
+O que e cateterismo?,perguntar_cateterismo
+Como funciona o cateterismo cardiaco?,perguntar_cateterismo
+Cateterismo e perigoso?,perguntar_cateterismo
+Para que serve a angiografia?,perguntar_cateterismo
+Preciso fazer cateterismo,perguntar_cateterismo
+Me explica o cateterismo,perguntar_cateterismo
+Quanto tempo dura um cateterismo?,perguntar_cateterismo
+Cateterismo doi muito?,perguntar_cateterismo
+Riscos do cateterismo cardiaco,perguntar_cateterismo
+O que acontece no cateterismo?,perguntar_cateterismo
+Quais exames do coracao existem?,perguntar_exame
+Que exames cardiovasculares posso fazer?,perguntar_exame
+Me fala sobre exames cardiacos,perguntar_exame
+Quais exames investigam o coracao?,perguntar_exame
+Preciso fazer exames do coracao,perguntar_exame
+Lista de exames cardiovasculares,perguntar_exame
+Que tipo de exame devo fazer?,perguntar_exame
+Exames para investigar dor no peito,perguntar_exame
+Quais exames o cardiologista pede?,perguntar_exame
+Me explica os exames do coracao,perguntar_exame
+O que eu tenho?,solicitar_diagnostico
+Qual e meu diagnostico?,solicitar_diagnostico
+Voce pode me diagnosticar?,solicitar_diagnostico
+Qual minha doenca?,solicitar_diagnostico
+Me diz o que eu tenho,solicitar_diagnostico
+Sera que tenho problema no coracao?,solicitar_diagnostico
+"Acho que estou com infarto, confirma?",solicitar_diagnostico
+Diagnostica meu problema,solicitar_diagnostico
+Tenho alguma doenca cardiaca?,solicitar_diagnostico
+Meus sintomas indicam o que?,solicitar_diagnostico
+Estou sentindo um desconforto,informar_sintoma_geral
+Nao estou me sentindo bem,informar_sintoma_geral
+Tenho um mal estar,informar_sintoma_geral
+Sinto dor,informar_sintoma_geral
+Estou com um incomodo,informar_sintoma_geral
+Nao me sinto bem ha dias,informar_sintoma_geral
+Tenho sentido algo estranho,informar_sintoma_geral
+Meu corpo esta estranho,informar_sintoma_geral
+Estou com um sintoma preocupante,informar_sintoma_geral
+Me sinto mal,informar_sintoma_geral

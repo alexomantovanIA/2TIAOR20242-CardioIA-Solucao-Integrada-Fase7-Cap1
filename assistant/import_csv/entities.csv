@@ -1,0 +1,80 @@
+sintoma,dor_peito,dor no peito
+sintoma,dor_peito,dor toracica
+sintoma,dor_peito,aperto no peito
+sintoma,dor_peito,pontada no peito
+sintoma,dor_peito,pressao no peito
+sintoma,palpitacao,palpitacao
+sintoma,palpitacao,coracao acelerado
+sintoma,palpitacao,taquicardia
+sintoma,palpitacao,batimento rapido
+sintoma,palpitacao,coracao disparado
+sintoma,falta_ar,falta de ar
+sintoma,falta_ar,dispneia
+sintoma,falta_ar,dificuldade para respirar
+sintoma,falta_ar,cansaco
+sintoma,falta_ar,fadiga
+sintoma,tontura,tontura
+sintoma,tontura,vertigem
+sintoma,tontura,desmaio
+sintoma,tontura,sincope
+sintoma,tontura,cabeca leve
+sintoma,pressao_alterada,pressao alta
+sintoma,pressao_alterada,hipertensao
+sintoma,pressao_alterada,pressao baixa
+sintoma,pressao_alterada,hipotensao
+sintoma,nausea,nausea
+sintoma,nausea,enjoo
+sintoma,nausea,vontade de vomitar
+sintoma,suor_frio,suor frio
+sintoma,suor_frio,sudorese
+sintoma,suor_frio,suando frio
+duracao,minutos,minutos
+duracao,minutos,poucos minutos
+duracao,minutos,alguns minutos
+duracao,horas,horas
+duracao,horas,algumas horas
+duracao,horas,ha horas
+duracao,dias,dias
+duracao,dias,ha dias
+duracao,dias,alguns dias
+duracao,dias,ha 2 dias
+duracao,dias,ha 3 dias
+duracao,semanas,semanas
+duracao,semanas,ha semanas
+duracao,semanas,uma semana
+duracao,semanas,ha 2 semanas
+duracao,meses,meses
+duracao,meses,ha meses
+duracao,meses,alguns meses
+duracao,meses,ha 1 mes
+intensidade,leve,leve
+intensidade,leve,fraco
+intensidade,leve,fraca
+intensidade,leve,suave
+intensidade,leve,sutil
+intensidade,moderada,moderada
+intensidade,moderada,moderado
+intensidade,moderada,medio
+intensidade,moderada,media
+intensidade,intensa,intensa
+intensidade,intensa,intenso
+intensidade,intensa,forte
+intensidade,intensa,severa
+intensidade,intensa,severo
+intensidade,intensa,aguda
+intensidade,intensa,agudo
+exame,ecg,ECG
+exame,ecg,eletrocardiograma
+exame,ecg,eletro
+exame,ecocardiograma,ecocardiograma
+exame,ecocardiograma,eco
+exame,ecocardiograma,eco doppler
+exame,holter,holter
+exame,holter,holter 24h
+exame,holter,holter 24 horas
+exame,teste_ergometrico,teste ergometrico
+exame,teste_ergometrico,teste de esforco
+exame,teste_ergometrico,esteira
+exame,cateterismo,cateterismo
+exame,cateterismo,cateterismo cardiaco
+exame,cateterismo,angiografia

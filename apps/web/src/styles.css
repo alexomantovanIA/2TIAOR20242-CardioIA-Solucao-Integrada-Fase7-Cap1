@@ -1,0 +1,416 @@
+:root {
+  color: #16211f;
+  background: #f4f7f6;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.loginShell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(135deg, rgba(230, 246, 239, 0.92), rgba(247, 242, 232, 0.86)),
+    url("https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1600&q=80");
+  background-size: cover;
+  background-position: center;
+}
+
+.loginPanel {
+  width: min(440px, 100%);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  padding: 32px;
+  box-shadow: 0 18px 60px rgba(22, 33, 31, 0.18);
+}
+
+.brandMark {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: #0f766e;
+  border-radius: 8px;
+}
+
+.loginPanel h1,
+.topbar h1,
+.riskPanel h2,
+.workflow h2,
+.about h2 {
+  margin: 10px 0;
+  letter-spacing: 0;
+}
+
+.loginPanel p,
+.loginPanel small,
+.riskPanel p,
+.actions p,
+.about p,
+footer {
+  color: #56615e;
+  line-height: 1.5;
+}
+
+.primaryButton,
+.iconButton,
+.navItem {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.primaryButton {
+  padding: 0 18px;
+  color: #ffffff;
+  background: #0f766e;
+  font-weight: 700;
+}
+
+.iconButton {
+  width: 42px;
+  color: #173631;
+  background: #e4ece9;
+}
+
+.iconButton.filled {
+  color: #ffffff;
+  background: #0f766e;
+}
+
+.appShell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 248px minmax(0, 1fr);
+}
+
+.sidebar {
+  color: #eaf7f4;
+  background: #102b2a;
+  padding: 24px 18px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.brand div {
+  display: grid;
+  gap: 3px;
+}
+
+.brand span,
+.eyebrow {
+  font-size: 0.78rem;
+  color: #71837f;
+}
+
+.sidebar .brand span {
+  color: #9ebbb5;
+}
+
+nav {
+  display: grid;
+  gap: 8px;
+}
+
+.navItem {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0 12px;
+  color: #d7e7e4;
+  background: transparent;
+}
+
+.navItem.active,
+.navItem:hover {
+  color: #102b2a;
+  background: #bde8df;
+}
+
+.content {
+  padding: 28px;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 18px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.errorBanner {
+  padding: 12px 14px;
+  color: #7f1d1d;
+  background: #fee2e2;
+  border-left: 4px solid #ef4444;
+  border-radius: 8px;
+}
+
+.dashboardGrid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 18px;
+}
+
+.summaryBand,
+.riskPanel,
+.workflow,
+.actions,
+.chatPanel,
+.historyList,
+.about {
+  border: 1px solid #dce6e2;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.summaryBand {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  overflow: hidden;
+}
+
+.metric {
+  min-height: 138px;
+  padding: 20px;
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  background: #fbfcfc;
+}
+
+.metric svg {
+  color: #0f766e;
+}
+
+.metric span {
+  color: #5b6763;
+}
+
+.metric strong {
+  font-size: clamp(1.35rem, 1.8rem, 1.8rem);
+}
+
+.riskPanel {
+  min-height: 180px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #173631;
+}
+
+.riskLow {
+  color: #166534;
+}
+
+.riskMedium {
+  color: #a16207;
+}
+
+.riskHigh {
+  color: #b91c1c;
+}
+
+.workflow,
+.actions,
+.about {
+  padding: 22px;
+}
+
+.workflow {
+  grid-column: span 2;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.steps span {
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #12312d;
+  background: #e4ece9;
+  font-weight: 700;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.chatPanel {
+  min-height: 560px;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+}
+
+.messages {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+}
+
+.message {
+  max-width: min(740px, 88%);
+  padding: 12px 14px;
+  border-radius: 8px;
+  line-height: 1.45;
+}
+
+.message.assistant {
+  align-self: flex-start;
+  background: #edf5f2;
+}
+
+.message.user {
+  align-self: flex-end;
+  color: #ffffff;
+  background: #0f766e;
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  padding: 14px;
+  border-top: 1px solid #dce6e2;
+}
+
+.composer input {
+  min-width: 0;
+  border: 1px solid #cbd8d4;
+  border-radius: 8px;
+  padding: 0 14px;
+}
+
+.historyList {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.historyItem {
+  min-height: 72px;
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, minmax(86px, auto));
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e3ebe8;
+  border-radius: 8px;
+}
+
+.historyItem div {
+  display: grid;
+  gap: 3px;
+}
+
+.historyItem span {
+  color: #56615e;
+}
+
+.about {
+  max-width: 860px;
+}
+
+.about ul {
+  padding-left: 20px;
+}
+
+footer {
+  font-size: 0.86rem;
+}
+
+@media (max-width: 880px) {
+  .appShell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 14px;
+  }
+
+  .brand {
+    margin-bottom: 12px;
+  }
+
+  nav {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .navItem {
+    justify-content: center;
+    padding: 0 8px;
+  }
+
+  .content {
+    padding: 18px;
+  }
+
+  .dashboardGrid,
+  .summaryBand,
+  .steps,
+  .historyItem {
+    grid-template-columns: 1fr;
+  }
+
+  .workflow {
+    grid-column: auto;
+  }
+
+  .actions,
+  .riskPanel {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
