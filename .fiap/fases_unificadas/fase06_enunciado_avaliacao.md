@@ -159,6 +159,27 @@ Esta etapa consolida competências em modelagem preditiva, integração de agent
 
 ## Avaliação
 
-Avaliação ainda não disponibilizada, pois esta é a fase atual.
+Sua Nota 15
+Total: 16.00
 
+feedback do professor
+
+Pontos positivos:
+
+Arquitetura multiagente muito bem definida, com separação clara de responsabilidades entre Orquestrador, Analista de Risco e Especialista em Protocolos
+Uso correto de conceitos avançados como handoffs, tools e histórico de execução, mostrando domínio do Agents SDK
+Integração consistente entre modelo preditivo e agentes, com fluxo completo bem estruturado (entrada → análise → protocolos → saída)
+Implementação de governança e validação de saída, incluindo checagem de coerência e schema obrigatório, o que eleva bastante o nível do projeto
+Presença de logs estruturados e rastreabilidade das decisões, algo que poucos grupos implementam bem
+Documentação clara, com diagramas e explicações objetivas sobre o funcionamento do sistema
+Exemplo real de execução com entrada e saída bem definido, demonstrando funcionamento prático do pipeline
+Pontos de melhoria:
+
+O relatório foca muito bem na arquitetura, mas traz pouca profundidade sobre o modelo de Machine Learning (treinamento, métricas e justificativas), que também é parte essencial da atividade
+Poderia detalhar melhor as métricas utilizadas e a qualidade do modelo (ex: acurácia, matriz de confusão), que são critérios explícitos da avaliação
+A explicação do fluxo técnico é boa, mas poderia incluir mais detalhes de implementação (ex: como os dados são tratados antes do modelo ou estrutura do código)
+Considerações finais:
+Seu trabalho está muito bem construído e demonstra maturidade técnica, principalmente na parte de arquitetura multiagente e governança, que são os pontos mais difíceis dessa fase. A integração entre agentes, modelo e validação está consistente e bem pensada. A única coisa que segurou a nota máxima foi a parte de Machine Learning, que ficou superficial no relatório. No geral, é um projeto forte, organizado e acima da média.
+
+Fez o Ir além
 
