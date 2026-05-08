@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, g, jsonify, request
 
 from backend.services.watson_service import WatsonService
 from backend.utils.patient_from_text import build_predictive_suggestion
@@ -62,6 +62,12 @@ def chat():
     response = watson_service.send_message(message, conversation_id)
 
     payload = response.to_dict()
+    user = getattr(g, "user", None)
+    if isinstance(user, dict):
+        payload["auth_context"] = {
+            "subject": user.get("subject"),
+            "tenant_id": user.get("tenant_id"),
+        }
     if not response.urgency_detected:
         suggestion = build_predictive_suggestion(message)
         if not suggestion:

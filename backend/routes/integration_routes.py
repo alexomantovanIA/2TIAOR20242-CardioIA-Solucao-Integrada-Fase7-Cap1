@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, g, jsonify, request
 
 from backend.routes.prediction_routes import _coerce_patient
 from backend.routes.chat_routes import watson_service
@@ -15,6 +15,16 @@ from backend.services.iot_store import (
 logger = logging.getLogger(__name__)
 
 integration_bp = Blueprint("integration", __name__)
+
+
+def _auth_context() -> dict | None:
+    user = getattr(g, "user", None)
+    if not isinstance(user, dict):
+        return None
+    return {
+        "subject": user.get("subject"),
+        "tenant_id": user.get("tenant_id"),
+    }
 
 
 def _ml_recommendation(patient: dict) -> dict:
@@ -63,6 +73,7 @@ def ingest_iot():
         "reading": reading,
         "patient_payload": patient_payload,
         "disclaimer": ACADEMIC_DISCLAIMER,
+        "auth_context": _auth_context(),
     }
 
     if body.get("include_recommendation") is True:
@@ -85,6 +96,7 @@ def dashboard_summary():
                 "risk_current": None,
                 "recommendation": "Aguardando leitura IoT.",
                 "disclaimer": ACADEMIC_DISCLAIMER,
+                "auth_context": _auth_context(),
             }
         ), 200
 
@@ -107,6 +119,7 @@ def dashboard_summary():
             "recommendation": recommendation_text,
             "recommendation_detail": recommendation,
             "disclaimer": ACADEMIC_DISCLAIMER,
+            "auth_context": _auth_context(),
         }
     ), 200
 
@@ -120,6 +133,7 @@ def patient_latest():
                 "patient": None,
                 "latest_iot_reading": None,
                 "disclaimer": ACADEMIC_DISCLAIMER,
+                "auth_context": _auth_context(),
             }
         ), 200
 
@@ -128,6 +142,7 @@ def patient_latest():
             "patient": patient_from_iot(latest),
             "latest_iot_reading": latest,
             "disclaimer": ACADEMIC_DISCLAIMER,
+            "auth_context": _auth_context(),
         }
     ), 200
 
@@ -171,5 +186,6 @@ def full_analysis():
             "urgency_detected": chat_response.urgency_detected,
             "safe_response": chat_payload.get("reply"),
             "disclaimer": ACADEMIC_DISCLAIMER,
+            "auth_context": _auth_context(),
         }
     ), 200

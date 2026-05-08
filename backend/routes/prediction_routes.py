@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, g, jsonify, request
 
 from backend.utils.safety_rules import URGENCY_RESPONSE, check_urgency
 
@@ -89,6 +89,13 @@ def predict_risk_http():
         return jsonify({"message": str(exc)}), 400
 
     note = None
+    user = getattr(g, "user", None)
+    auth_context = None
+    if isinstance(user, dict):
+        auth_context = {
+            "subject": user.get("subject"),
+            "tenant_id": user.get("tenant_id"),
+        }
     try:
         if mode == "ml_only":
             recommendation = run_pipeline_ml_only(patient)
@@ -99,6 +106,7 @@ def predict_risk_http():
                         "mode": "ml_only",
                         "recommendation": recommendation,
                         "note": note,
+                        "auth_context": auth_context,
                     }
                 ),
                 200,
@@ -117,6 +125,7 @@ def predict_risk_http():
                         "mode": "ml_only",
                         "recommendation": recommendation,
                         "note": note,
+                        "auth_context": auth_context,
                     }
                 ),
                 200,
@@ -130,6 +139,7 @@ def predict_risk_http():
                     "mode": "agents",
                     "recommendation": recommendation,
                     "note": note,
+                    "auth_context": auth_context,
                 }
             ),
             200,

@@ -1,11 +1,12 @@
 import os
 import logging
-from flask import Flask, send_from_directory
+from flask import Flask, jsonify, request, send_from_directory, g
 
 from backend.config import Config
 from backend.routes.chat_routes import chat_bp
 from backend.routes.integration_routes import integration_bp
 from backend.routes.prediction_routes import prediction_bp
+from backend.utils.auth import AuthError, parse_jwt_without_signature, validate_entra_claims
 
 logging.basicConfig(
     level=logging.INFO,
@@ -24,6 +25,34 @@ def create_app():
     app.register_blueprint(chat_bp)
     app.register_blueprint(prediction_bp)
     app.register_blueprint(integration_bp)
+
+    @app.before_request
+    def protect_api_routes():
+        if not app.config.get("AUTH_ENABLED", True):
+            return None
+
+        if request.method == "OPTIONS":
+            return None
+        if request.path == "/health":
+            return None
+        if not request.path.startswith("/api/"):
+            return None
+
+        auth_header = request.headers.get("Authorization", "")
+        if not auth_header.startswith("Bearer "):
+            return jsonify({"message": "Unauthorized: token ausente."}), 401
+
+        token = auth_header.replace("Bearer ", "", 1).strip()
+        try:
+            claims = parse_jwt_without_signature(token)
+            g.user = validate_entra_claims(
+                claims,
+                tenant_id=app.config["ENTRA_TENANT_ID"],
+                audience=app.config["ENTRA_AUDIENCE"],
+                issuer=app.config["ENTRA_ISSUER"],
+            )
+        except AuthError as exc:
+            return jsonify({"message": f"Unauthorized: {exc}"}), 401
 
     @app.after_request
     def add_cors_headers(response):

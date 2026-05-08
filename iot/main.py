@@ -13,6 +13,7 @@ except ImportError:
 WIFI_SSID = ""
 WIFI_PASSWORD = ""
 API_URL = ""  # Exemplo: "http://192.168.0.10:5000/api/iot/ingest"
+API_BEARER_TOKEN = ""  # Opcional para backend com /api/* protegido
 DEVICE_ID = "wokwi-esp32-cardioia"
 
 LED_RED = Pin(25, Pin.OUT)
@@ -87,7 +88,10 @@ def post_reading(payload):
     if not API_URL or not urequests:
         return
     try:
-        response = urequests.post(API_URL, json=payload)
+        headers = {}
+        if API_BEARER_TOKEN:
+            headers["Authorization"] = f"Bearer {API_BEARER_TOKEN}"
+        response = urequests.post(API_URL, json=payload, headers=headers or None)
         print("POST backend:", response.status_code)
         response.close()
     except Exception as exc:

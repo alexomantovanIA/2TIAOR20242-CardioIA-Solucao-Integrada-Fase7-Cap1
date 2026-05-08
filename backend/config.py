@@ -10,6 +10,13 @@ class Config:
     PORT = int(os.getenv("PORT", 5000))
     CORS_ORIGINS = os.getenv("CORS_ORIGINS", "*")
     DEFAULT_PATIENT_AGE = int(os.getenv("DEFAULT_PATIENT_AGE", 55))
+    AUTH_ENABLED = os.getenv("AUTH_ENABLED", "true").lower() == "true"
+    ENTRA_TENANT_ID = os.getenv("ENTRA_TENANT_ID", "fiap-tenant")
+    ENTRA_AUDIENCE = os.getenv("ENTRA_AUDIENCE", "cardioia-api")
+    ENTRA_ISSUER = os.getenv(
+        "ENTRA_ISSUER",
+        f"https://login.microsoftonline.com/{ENTRA_TENANT_ID}/v2.0",
+    )
 
     WATSON_API_KEY = os.getenv("WATSON_API_KEY", "")
     WATSON_URL = os.getenv("WATSON_URL", "")

@@ -13,6 +13,23 @@ Sensor simulado -> MicroPython/Wokwi -> Backend Flask -> IA/ML Fase 6 -> Web Rea
 - Wokwi publico: `PREENCHER_APOS_PUBLICAR_WOKWI`
 - Video demonstrativo: `PREENCHER_APOS_GRAVACAO`
 
+## Escopo desta entrega (nota maxima sem IR ALÉM)
+
+Esta entrega cobre somente os requisitos obrigatorios da Fase 7.
+Os itens "IR ALÉM 1" e "IR ALÉM 2" estao fora de escopo para esta submissao.
+
+Checklist de submissao obrigatoria:
+
+- [ ] URL publica do deploy Web funcionando e acessivel
+- [ ] Build Android APK (`preview`) gerado no Expo EAS
+- [ ] Projeto Wokwi publico com simulacao MicroPython funcional
+- [ ] Fluxo validado: login + visualizacao dos dados cardiacos
+- [ ] Arquitetura final documentada (`Sensor -> MicroPython -> Backend -> IA -> UI`)
+- [ ] Relatorio tecnico PDF (maximo 5 paginas)
+- [ ] Video demonstrativo (ate 5 minutos)
+
+Guia operacional de entrega: `docs/fase7_checklist_entrega.md`
+
 ## Estrutura Fase 7
 
 ```text
@@ -93,6 +110,18 @@ Variavel:
 VITE_API_BASE_URL=http://localhost:5000
 ```
 
+Autenticacao (Entra ID):
+
+```bash
+AUTH_ENABLED=true
+ENTRA_TENANT_ID=fiap-tenant
+ENTRA_AUDIENCE=cardioia-api
+ENTRA_ISSUER=https://login.microsoftonline.com/fiap-tenant/v2.0
+```
+
+Com essa configuracao, todas as rotas `/api/*` exigem token Bearer valido,
+exceto `GET /health`.
+
 Deploy Vercel:
 
 - Conectar o repositorio GitHub na Vercel.
@@ -125,6 +154,16 @@ npx eas build --platform android --profile preview
 
 O `app.json` usa `android.package = br.com.fiap.cardioiafase7`, e o `eas.json` usa `android.buildType = apk` no profile `preview`.
 
+## Matriz de entregaveis obrigatorios (Fase 7)
+
+| Item | Evidencia |
+|---|---|
+| Deploy Web publico com CI/CD | URL em "Links de entrega" + print |
+| APK Android (EAS preview) | Link/QR do Expo Dashboard |
+| Integracao Backend + IA + UI | Testes `backend/tests` + demo em video |
+| MicroPython/Wokwi funcional | Link publico do Wokwi |
+| Relatorio e video | Arquivos em `docs/` + URL final |
+
 ## IoT MicroPython/Wokwi
 
 Local: `iot/`.
@@ -138,6 +177,7 @@ Local: `iot/`.
 - Relatorio tecnico: [`docs/relatorio_fase7.md`](docs/relatorio_fase7.md)
 - Roteiro do video: [`docs/roteiro_video.md`](docs/roteiro_video.md)
 - Diagrama Mermaid: [`docs/arquitetura_final.mmd`](docs/arquitetura_final.mmd)
+- Checklist de entrega: [`docs/fase7_checklist_entrega.md`](docs/fase7_checklist_entrega.md)
 
 ## Prints esperados
 

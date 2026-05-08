@@ -2,6 +2,7 @@ flowchart LR
     sensor["Sensor simulado<br/>heart_rate, temperature, spo2"]
     micropython["ESP32 MicroPython<br/>Wokwi + status + LED RGB"]
     backend["Backend Python Flask<br/>/api/iot/ingest + /api/full-analysis"]
+    auth["Microsoft Entra ID<br/>JWT Bearer single-tenant"]
     ai["APIs de IA / ML<br/>RandomForest ml_only + fallback local<br/>OpenAI/Watson opcionais"]
     web["Web React + Vite<br/>Vercel SPA"]
     mobile["Mobile React Native + Expo<br/>EAS APK"]
@@ -10,5 +11,8 @@ flowchart LR
     micropython --> backend
     backend --> ai
     ai --> backend
+    auth --> backend
+    web --> auth
+    mobile --> auth
     backend --> web
     backend --> mobile

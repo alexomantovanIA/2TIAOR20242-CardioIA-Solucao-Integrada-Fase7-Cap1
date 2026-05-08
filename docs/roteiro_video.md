@@ -41,7 +41,7 @@ Abrir a Web Vercel ou local.
 
 Mostrar:
 
-- Login demo.
+- Login real via Entra ID (single-tenant).
 - Dashboard com sinais vitais.
 - Card de risco.
 - Simular leitura.
@@ -55,7 +55,7 @@ Abrir Expo Go/APK.
 
 Mostrar:
 
-- Login demo.
+- Login real via Entra ID (single-tenant).
 - Home com risco atual.
 - Sinais vitais.
 - Chat.

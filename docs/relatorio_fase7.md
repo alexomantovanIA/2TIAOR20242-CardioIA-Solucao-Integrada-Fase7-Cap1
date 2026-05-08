@@ -27,9 +27,9 @@ O modo padrao e `ml_only`, usando o arquivo `ml/modelo_risco_cardiaco.joblib`. O
 
 ## 4. Web e Mobile
 
-A Web foi criada em `apps/web` com React, Vite e TypeScript. Ela inclui login demo, dashboard de sinais vitais, card de risco, chat cardiologico, historico simples e tela Sobre. O deploy na Vercel e preparado por `vercel.json`, com rewrite para `/index.html`.
+A Web foi criada em `apps/web` com React, Vite e TypeScript. Ela inclui login com Entra ID (single-tenant), dashboard de sinais vitais, card de risco, chat cardiologico, historico simples e tela Sobre. O deploy na Vercel e preparado por `vercel.json`, com rewrite para `/index.html`.
 
-O Mobile foi criado em `apps/mobile` com React Native e Expo. Ele inclui login demo, home com risco atual, sinais vitais, chat, recomendacoes e sobre. O `app.json` define `android.package` como `br.com.fiap.cardioiafase7`, e o `eas.json` possui profile `preview` com APK.
+O Mobile foi criado em `apps/mobile` com React Native e Expo. Ele inclui login com Entra ID (single-tenant), home com risco atual, sinais vitais, chat, recomendacoes e sobre. O `app.json` define `android.package` como `br.com.fiap.cardioiafase7`, e o `eas.json` possui profile `preview` com APK.
 
 ## 5. IoT MicroPython
 
@@ -39,7 +39,7 @@ O diretorio `iot/` contem `main.py` e `diagram.json` para Wokwi. O ESP32 simula 
 
 Comandos executados:
 
-- `.venv311/bin/pytest backend/tests agents/tests -q`: 71 testes passaram.
+- `pytest backend/tests agents/tests -q`: 76 testes passaram.
 - `cd apps/web && npm run lint`: sem erros.
 - `cd apps/web && npm run build`: build Vite concluido.
 - `cd apps/web && npm run preview`: servidor de preview iniciou.
@@ -47,7 +47,8 @@ Comandos executados:
 - `cd apps/mobile && npx expo start`: Metro iniciou e exibiu QR/URL.
 - `curl /api/iot/ingest`: leitura aceita com status `atencao`.
 - `curl /api/full-analysis`: resposta combinada com chat fallback local e risco `médio`.
+- benchmark autenticado `/api/full-analysis` (100 req): `p95=15.97ms`, `media=66.49ms`.
 
 ## 7. Limitacoes
 
-O MVP nao possui banco de dados, autenticacao real, historico persistente completo, consentimento LGPD formal ou deploy backend publico configurado neste workspace. As URLs publicas da Vercel, APK/Expo e Wokwi devem ser preenchidas apos publicacao. A visao computacional pesada ficou fora do fluxo principal por decisao de custo e estabilidade.
+O MVP nao possui banco de dados, historico persistente completo, consentimento LGPD formal ou deploy backend publico configurado neste workspace. As URLs publicas da Vercel, APK/Expo e Wokwi devem ser preenchidas apos publicacao. A visao computacional pesada ficou fora do fluxo principal por decisao de custo e estabilidade.

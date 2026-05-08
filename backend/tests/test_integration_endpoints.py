@@ -1,12 +1,26 @@
 import pytest
 
 from backend.app import create_app
+from backend.tests.auth_token import build_test_jwt
 
 
 @pytest.fixture
 def client():
     app = create_app()
     app.config["TESTING"] = True
+    app.config["AUTH_ENABLED"] = False
+    with app.test_client() as client:
+        yield client
+
+
+@pytest.fixture
+def client_auth():
+    app = create_app()
+    app.config["TESTING"] = True
+    app.config["AUTH_ENABLED"] = True
+    app.config["ENTRA_TENANT_ID"] = "fiap-tenant"
+    app.config["ENTRA_AUDIENCE"] = "cardioia-api"
+    app.config["ENTRA_ISSUER"] = "https://login.microsoftonline.com/fiap-tenant/v2.0"
     with app.test_client() as client:
         yield client
 
@@ -107,3 +121,28 @@ def test_cors_header_is_present(client):
     response = client.get("/health")
     assert response.status_code == 200
     assert response.headers["Access-Control-Allow-Origin"]
+
+
+def test_iot_ingest_authenticated_returns_201(client_auth):
+    token = build_test_jwt()
+    response = client_auth.post(
+        "/api/iot/ingest",
+        headers={"Authorization": f"Bearer {token}"},
+        json={
+            "device_id": "esp32-auth",
+            "heart_rate": 88,
+            "temperature": 36.9,
+            "spo2": 97,
+            "timestamp": "2026-05-08T18:50:00Z",
+        },
+    )
+    assert response.status_code == 201
+
+
+def test_dashboard_summary_authenticated_returns_200(client_auth):
+    token = build_test_jwt()
+    response = client_auth.get(
+        "/api/dashboard/summary",
+        headers={"Authorization": f"Bearer {token}"},
+    )
+    assert response.status_code == 200
