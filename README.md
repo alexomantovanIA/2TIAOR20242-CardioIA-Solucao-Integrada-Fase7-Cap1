@@ -108,9 +108,12 @@ Variavel:
 
 ```bash
 VITE_API_BASE_URL=http://localhost:5000
+VITE_ENTRA_TENANT_ID=<TENANT_ID>
+VITE_ENTRA_WEB_CLIENT_ID=<WEB_SPA_CLIENT_ID>
+VITE_ENTRA_API_SCOPE=api://<API_CLIENT_ID>/access_as_user
 ```
 
-Autenticacao (Entra ID):
+Autenticacao (Entra ID) — backend:
 
 ```bash
 AUTH_ENABLED=true
@@ -127,7 +130,7 @@ Deploy Vercel:
 - Conectar o repositorio GitHub na Vercel.
 - Definir o root directory como `apps/web`.
 - Usar o `vercel.json` ja incluido para SPA rewrite em `/index.html`.
-- Configurar `VITE_API_BASE_URL` para a URL publica do backend.
+- Configurar `VITE_API_BASE_URL`, `VITE_ENTRA_TENANT_ID`, `VITE_ENTRA_WEB_CLIENT_ID` e `VITE_ENTRA_API_SCOPE` (iguais ao registro SPA + scope da API).
 
 ## Mobile Expo
 
@@ -144,7 +147,12 @@ Variavel:
 
 ```bash
 EXPO_PUBLIC_API_BASE_URL=http://localhost:5000
+EXPO_PUBLIC_ENTRA_TENANT_ID=<TENANT_ID>
+EXPO_PUBLIC_ENTRA_MOBILE_CLIENT_ID=<MOBILE_CLIENT_ID>
+EXPO_PUBLIC_ENTRA_API_SCOPE=api://<API_CLIENT_ID>/access_as_user
 ```
+
+Registre no Entra o redirect URI retornado pelo app (`expo-auth-session` / `scheme` `cardioiafase7`). Detalhes em `docs/guia_entra_id_testes_publicacao_fase7.md`.
 
 APK preview:
 

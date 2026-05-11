@@ -1,5 +1,12 @@
+import {
+  AccessTokenRequest,
+  makeRedirectUri,
+  useAuthRequest,
+  useAutoDiscovery,
+} from 'expo-auth-session';
+import * as WebBrowser from 'expo-web-browser';
 import { StatusBar } from 'expo-status-bar';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity,
   Bot,
@@ -7,6 +14,7 @@ import {
   Home,
   Info,
   LogIn,
+  LogOut,
   MessageCircle,
   RefreshCw,
   Send,
@@ -23,8 +31,15 @@ import {
   View,
 } from 'react-native';
 
+WebBrowser.maybeCompleteAuthSession();
+
 const API_BASE_URL = process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:5000';
 const DISCLAIMER = 'Sistema acadêmico. Não substitui avaliação médica.';
+
+const ENTRA_TENANT = process.env.EXPO_PUBLIC_ENTRA_TENANT_ID ?? '';
+const ENTRA_MOBILE_CLIENT = process.env.EXPO_PUBLIC_ENTRA_MOBILE_CLIENT_ID ?? '';
+const ENTRA_API_SCOPE = process.env.EXPO_PUBLIC_ENTRA_API_SCOPE ?? '';
+const entraConfigured = Boolean(ENTRA_TENANT && ENTRA_MOBILE_CLIENT && ENTRA_API_SCOPE);
 
 type TabId = 'home' | 'vitals' | 'chat' | 'recommendations' | 'about';
 
@@ -74,23 +89,8 @@ function formatTime(value?: string) {
   return parsed.toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' });
 }
 
-async function api<T>(path: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options?.headers || {}),
-    },
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || 'Falha ao consultar a API CardioIA.');
-  }
-  return data as T;
-}
-
 export default function App() {
-  const [logged, setLogged] = useState(false);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [tab, setTab] = useState<TabId>('home');
   const [summary, setSummary] = useState<Summary | null>(null);
   const [message, setMessage] = useState('Tenho palpitacoes leves ha dois dias.');
@@ -99,6 +99,114 @@ export default function App() {
   ]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const redirectUri = useMemo(
+    () => makeRedirectUri({ scheme: 'cardioiafase7', path: 'auth' }),
+    [],
+  );
+
+  const discovery = useAutoDiscovery(
+    ENTRA_TENANT ? `https://login.microsoftonline.com/${ENTRA_TENANT}/v2.0` : 'https://login.microsoftonline.com/common/v2.0',
+  );
+
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: ENTRA_MOBILE_CLIENT || '00000000-0000-0000-0000-000000000000',
+      scopes: entraConfigured ? [ENTRA_API_SCOPE, 'openid', 'offline_access'] : ['openid'],
+      redirectUri,
+    },
+    discovery,
+  );
+
+  useEffect(() => {
+    if (!response) return;
+    if (response.type === 'error') {
+      const msg =
+        response.error?.message ??
+        response.params?.error_description ??
+        response.params?.error ??
+        'Erro no login Entra ID.';
+      setError(String(msg));
+      return;
+    }
+    if (response.type !== 'success' || !entraConfigured) return;
+
+    if (response.authentication?.accessToken) {
+      setAccessToken(response.authentication.accessToken);
+      return;
+    }
+
+    const code = response.params.code;
+    if (!code || !request || !discovery) {
+      setError('Resposta de autorização incompleta.');
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      try {
+        const tokenReq = new AccessTokenRequest({
+          clientId: ENTRA_MOBILE_CLIENT,
+          code,
+          redirectUri,
+          extraParams: request.codeVerifier ? { code_verifier: request.codeVerifier } : undefined,
+          scopes: [ENTRA_API_SCOPE, 'openid', 'offline_access'],
+        });
+        const tokenRes = await tokenReq.performAsync(discovery);
+        if (!cancelled) setAccessToken(tokenRes.accessToken);
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : 'Falha ao obter token.');
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [response, entraConfigured, request, discovery, ENTRA_MOBILE_CLIENT, ENTRA_API_SCOPE, redirectUri]);
+
+  const callApi = useCallback(
+    async <T,>(path: string, options?: RequestInit): Promise<T> => {
+      if (!accessToken) {
+        throw new Error('Sessão inválida. Entre novamente com Entra ID.');
+      }
+      const response = await fetch(`${API_BASE_URL}${path}`, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+          ...(options?.headers ?? {}),
+        },
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Falha ao consultar a API CardioIA.');
+      }
+      return data as T;
+    },
+    [accessToken],
+  );
+
+  const loadSummary = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      setSummary(await callApi<Summary>('/api/dashboard/summary'));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Erro inesperado.');
+    } finally {
+      setLoading(false);
+    }
+  }, [callApi]);
+
+  useEffect(() => {
+    if (accessToken) {
+      void loadSummary();
+    }
+  }, [accessToken, loadSummary]);
+
+  const logged = Boolean(accessToken);
 
   const latest = summary?.latest_iot_reading || null;
   const risk = summary?.risk_current || latest?.status || null;
@@ -113,23 +221,11 @@ export default function App() {
     [latest],
   );
 
-  async function loadSummary() {
-    setLoading(true);
-    setError('');
-    try {
-      setSummary(await api<Summary>('/api/dashboard/summary'));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro inesperado.');
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function sendDemoReading() {
     setLoading(true);
     setError('');
     try {
-      await api('/api/iot/ingest', {
+      await callApi('/api/iot/ingest', {
         method: 'POST',
         body: JSON.stringify({
           device_id: 'expo-demo',
@@ -154,7 +250,7 @@ export default function App() {
     setLoading(true);
     setError('');
     try {
-      const data = await api<{ reply: string }>('/api/chat', {
+      const data = await callApi<{ reply: string }>('/api/chat', {
         method: 'POST',
         body: JSON.stringify({ message: text }),
       });
@@ -166,7 +262,33 @@ export default function App() {
     }
   }
 
+  function handleLogout() {
+    setAccessToken(null);
+    setSummary(null);
+    setError('');
+  }
+
   if (!logged) {
+    if (!entraConfigured) {
+      return (
+        <SafeAreaView style={styles.login}>
+          <StatusBar style="dark" />
+          <View style={styles.loginPanel}>
+            <HeartPulse color="#0f766e" size={42} />
+            <Text style={styles.title}>CardioIA Fase 7</Text>
+            <Text style={styles.copy}>MVP mobile integrado ao backend Python e ao modelo da Fase 6.</Text>
+            <Text style={styles.copy}>Defina no ambiente Expo:</Text>
+            <Text style={styles.mono}>EXPO_PUBLIC_ENTRA_TENANT_ID</Text>
+            <Text style={styles.mono}>EXPO_PUBLIC_ENTRA_MOBILE_CLIENT_ID</Text>
+            <Text style={styles.mono}>EXPO_PUBLIC_ENTRA_API_SCOPE</Text>
+            <Text style={styles.mono}>EXPO_PUBLIC_API_BASE_URL</Text>
+            <Text style={styles.copy}>Guia: docs/guia_entra_id_testes_publicacao_fase7.md</Text>
+            <Text style={styles.disclaimer}>{DISCLAIMER}</Text>
+          </View>
+        </SafeAreaView>
+      );
+    }
+
     return (
       <SafeAreaView style={styles.login}>
         <StatusBar style="dark" />
@@ -174,15 +296,17 @@ export default function App() {
           <HeartPulse color="#0f766e" size={42} />
           <Text style={styles.title}>CardioIA Fase 7</Text>
           <Text style={styles.copy}>MVP mobile integrado ao backend Python e ao modelo da Fase 6.</Text>
+          {error ? <Text style={styles.errorInline}>{error}</Text> : null}
           <TouchableOpacity
             style={styles.primaryButton}
+            disabled={!request || loading}
             onPress={() => {
-              setLogged(true);
-              void loadSummary();
+              setError('');
+              void promptAsync();
             }}
           >
             <LogIn color="#fff" size={18} />
-            <Text style={styles.primaryText}>Entrar no demo</Text>
+            <Text style={styles.primaryText}>Entrar com Microsoft Entra ID</Text>
           </TouchableOpacity>
           <Text style={styles.disclaimer}>{DISCLAIMER}</Text>
         </View>
@@ -198,9 +322,14 @@ export default function App() {
           <Text style={styles.kicker}>CardioIA FIAP</Text>
           <Text style={styles.title}>{tabs.find((item) => item.id === tab)?.label}</Text>
         </View>
-        <TouchableOpacity style={styles.iconButton} onPress={loadSummary} disabled={loading}>
-          <RefreshCw color="#173631" size={18} />
-        </TouchableOpacity>
+        <View style={styles.headerActions}>
+          <TouchableOpacity style={styles.iconButton} onPress={loadSummary} disabled={loading}>
+            <RefreshCw color="#173631" size={18} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconButton} onPress={handleLogout}>
+            <LogOut color="#173631" size={18} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
@@ -278,8 +407,8 @@ export default function App() {
           <View style={styles.panel}>
             <Text style={styles.sectionTitle}>Sobre o MVP</Text>
             <Text style={styles.copy}>
-              Aplicativo Expo para demonstrar o fluxo Sensor, MicroPython, Backend Python, IA e canais Web/Mobile.
-              Não apresenta diagnóstico definitivo.
+              Aplicativo Expo para demonstrar o fluxo Sensor, MicroPython, Backend Python, IA e canais Web/Mobile. Não
+              apresenta diagnóstico definitivo.
             </Text>
             <Text style={styles.disclaimer}>{DISCLAIMER}</Text>
             <Text style={styles.copy}>API: {API_BASE_URL}</Text>
@@ -327,6 +456,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  headerActions: {
+    flexDirection: 'row',
+    gap: 8,
+  },
   content: {
     gap: 14,
     padding: 18,
@@ -351,6 +484,11 @@ const styles = StyleSheet.create({
   copy: {
     color: '#56615e',
     lineHeight: 21,
+  },
+  mono: {
+    fontFamily: 'monospace',
+    color: '#384542',
+    fontSize: 12,
   },
   disclaimer: {
     color: '#6b4d09',
@@ -384,6 +522,10 @@ const styles = StyleSheet.create({
     color: '#7f1d1d',
     backgroundColor: '#fee2e2',
     borderRadius: 8,
+  },
+  errorInline: {
+    color: '#7f1d1d',
+    lineHeight: 20,
   },
   riskCard: {
     gap: 8,

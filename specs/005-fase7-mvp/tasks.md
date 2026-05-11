@@ -83,6 +83,8 @@
 - [X] T023 [US2] Integrar validação de token em `backend/routes/prediction_routes.py`
 - [X] T024 [US2] Ajustar payload IoT para compatibilidade com fluxo autenticado em `iot/main.py`
 - [X] T025 [US2] Atualizar documentação do fluxo fim-a-fim em `docs/arquitetura_final.mmd`
+- [X] T036 [US2] Implementar login Microsoft Entra ID (MSAL) e envio de Bearer no Web (`apps/web/`)
+- [X] T037 [US2] Implementar login Microsoft Entra ID (PKCE) e envio de Bearer no Mobile (`apps/mobile/`)
 
 **Checkpoint**: integração fim-a-fim autenticada e funcional.
 

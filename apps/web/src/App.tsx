@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Activity,
   Bot,
@@ -6,11 +6,19 @@ import {
   History,
   Info,
   LogIn,
+  LogOut,
   RefreshCw,
   Send,
   ShieldAlert,
   Thermometer,
 } from "lucide-react";
+import {
+  acquireApiToken,
+  hasMsalAccount,
+  isMsalConfigured,
+  loginEntraPopup,
+  logoutEntra,
+} from "./auth/msal";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000";
 const DISCLAIMER = "Sistema acadêmico. Não substitui avaliação médica.";
@@ -73,21 +81,6 @@ function formatTime(value?: string) {
   return parsed.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
 }
 
-async function api<T>(path: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...(options?.headers || {}),
-    },
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message || "Falha ao consultar a API CardioIA.");
-  }
-  return data as T;
-}
-
 export default function App() {
   const [logged, setLogged] = useState(false);
   const [activeTab, setActiveTab] = useState<TabId>("dashboard");
@@ -102,6 +95,59 @@ export default function App() {
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const callApi = useCallback(async <T,>(path: string, options?: RequestInit): Promise<T> => {
+    if (!isMsalConfigured()) {
+      throw new Error("Configure VITE_ENTRA_TENANT_ID, VITE_ENTRA_WEB_CLIENT_ID e VITE_ENTRA_API_SCOPE.");
+    }
+    const token = await acquireApiToken();
+    const response = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        ...(options?.headers ?? {}),
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Falha ao consultar a API CardioIA.");
+    }
+    return data as T;
+  }, []);
+
+  const loadSummary = useCallback(async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const data = await callApi<DashboardSummary>("/api/dashboard/summary");
+      setSummary(data);
+      if (data.latest_iot_reading) {
+        setHistory((current) => {
+          const withoutDuplicate = current.filter(
+            (item) => item.timestamp !== data.latest_iot_reading?.timestamp,
+          );
+          return [data.latest_iot_reading!, ...withoutDuplicate].slice(0, 8);
+        });
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro inesperado.");
+    } finally {
+      setLoading(false);
+    }
+  }, [callApi]);
+
+  useEffect(() => {
+    if (isMsalConfigured() && hasMsalAccount()) {
+      setLogged(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (logged) {
+      void loadSummary();
+    }
+  }, [logged, loadSummary]);
 
   const latest = summary?.latest_iot_reading || null;
   const protocol = summary?.recommendation_detail?.suggested_protocols?.[0];
@@ -128,33 +174,12 @@ export default function App() {
     [latest],
   );
 
-  async function loadSummary() {
-    setLoading(true);
-    setError("");
-    try {
-      const data = await api<DashboardSummary>("/api/dashboard/summary");
-      setSummary(data);
-      if (data.latest_iot_reading) {
-        setHistory((current) => {
-          const withoutDuplicate = current.filter(
-            (item) => item.timestamp !== data.latest_iot_reading?.timestamp,
-          );
-          return [data.latest_iot_reading!, ...withoutDuplicate].slice(0, 8);
-        });
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Erro inesperado.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function sendDemoReading() {
     setLoading(true);
     setError("");
     const now = new Date();
     try {
-      await api("/api/iot/ingest", {
+      await callApi("/api/iot/ingest", {
         method: "POST",
         body: JSON.stringify({
           device_id: "wokwi-esp32-demo",
@@ -179,7 +204,7 @@ export default function App() {
     setLoading(true);
     setError("");
     try {
-      const data = await api<{ reply: string; disclaimer: string }>("/api/chat", {
+      const data = await callApi<{ reply: string; disclaimer: string }>("/api/chat", {
         method: "POST",
         body: JSON.stringify({ message }),
       });
@@ -191,7 +216,55 @@ export default function App() {
     }
   }
 
+  async function handleLogout() {
+    setError("");
+    try {
+      if (isMsalConfigured()) {
+        await logoutEntra();
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao sair.");
+    } finally {
+      setLogged(false);
+      setSummary(null);
+      setHistory([]);
+    }
+  }
+
   if (!logged) {
+    if (!isMsalConfigured()) {
+      return (
+        <main className="loginShell">
+          <section className="loginPanel">
+            <div className="brandMark">
+              <HeartPulse size={32} />
+            </div>
+            <h1>CardioIA Fase 7</h1>
+            <p>MVP integrado de monitoramento cardiovascular acadêmico.</p>
+            <p>Para login real com Microsoft Entra ID, defina no arquivo de ambiente do Vite:</p>
+            <ul className="loginHintList">
+              <li>
+                <code>VITE_ENTRA_TENANT_ID</code>
+              </li>
+              <li>
+                <code>VITE_ENTRA_WEB_CLIENT_ID</code> (app SPA)
+              </li>
+              <li>
+                <code>VITE_ENTRA_API_SCOPE</code> (ex.: <code>api://&lt;API_CLIENT_ID&gt;/access_as_user</code>)
+              </li>
+              <li>
+                <code>VITE_API_BASE_URL</code>
+              </li>
+            </ul>
+            <p className="loginHintDoc">
+              Passo a passo no repositório: <code>docs/guia_entra_id_testes_publicacao_fase7.md</code>
+            </p>
+            <small>{DISCLAIMER}</small>
+          </section>
+        </main>
+      );
+    }
+
     return (
       <main className="loginShell">
         <section className="loginPanel">
@@ -200,15 +273,28 @@ export default function App() {
           </div>
           <h1>CardioIA Fase 7</h1>
           <p>MVP integrado de monitoramento cardiovascular acadêmico.</p>
+          {error ? <div className="errorBanner loginError">{error}</div> : null}
           <button
+            type="button"
             className="primaryButton"
+            disabled={loading}
             onClick={() => {
-              setLogged(true);
-              void loadSummary();
+              void (async () => {
+                try {
+                  setError("");
+                  setLoading(true);
+                  await loginEntraPopup();
+                  setLogged(true);
+                } catch (err) {
+                  setError(err instanceof Error ? err.message : "Falha no login Entra ID.");
+                } finally {
+                  setLoading(false);
+                }
+              })();
             }}
           >
             <LogIn size={18} />
-            Entrar no demo
+            Entrar com Microsoft Entra ID
           </button>
           <small>{DISCLAIMER}</small>
         </section>
@@ -232,6 +318,7 @@ export default function App() {
             return (
               <button
                 key={tab.id}
+                type="button"
                 className={activeTab === tab.id ? "navItem active" : "navItem"}
                 onClick={() => setActiveTab(tab.id)}
                 title={tab.label}
@@ -250,9 +337,14 @@ export default function App() {
             <span className="eyebrow">MVP integrado</span>
             <h1>{tabs.find((tab) => tab.id === activeTab)?.label}</h1>
           </div>
-          <button className="iconButton" onClick={loadSummary} disabled={loading} title="Atualizar dados">
-            <RefreshCw size={18} />
-          </button>
+          <div className="topbarActions">
+            <button type="button" className="iconButton" onClick={loadSummary} disabled={loading} title="Atualizar dados">
+              <RefreshCw size={18} />
+            </button>
+            <button type="button" className="iconButton" onClick={() => void handleLogout()} title="Sair">
+              <LogOut size={18} />
+            </button>
+          </div>
         </header>
 
         {error && <div className="errorBanner">{error}</div>}
@@ -293,7 +385,7 @@ export default function App() {
             </section>
 
             <section className="actions">
-              <button className="primaryButton" onClick={sendDemoReading} disabled={loading}>
+              <button type="button" className="primaryButton" onClick={sendDemoReading} disabled={loading}>
                 <Activity size={18} />
                 Simular leitura Wokwi
               </button>
@@ -320,7 +412,7 @@ export default function App() {
                 }}
                 placeholder="Digite sua mensagem"
               />
-              <button className="iconButton filled" onClick={sendChat} disabled={loading} title="Enviar">
+              <button type="button" className="iconButton filled" onClick={sendChat} disabled={loading} title="Enviar">
                 <Send size={18} />
               </button>
             </div>
@@ -349,9 +441,9 @@ export default function App() {
           <section className="about">
             <h2>CardioIA Fase 7</h2>
             <p>
-              Plataforma acadêmica integrada com sensor simulado, backend Python, modelo preditivo
-              supervisionado e assistente local seguro. A visão apresentada não emite diagnóstico
-              definitivo e deve ser usada apenas para demonstração educacional.
+              Plataforma acadêmica integrada com sensor simulado, backend Python, modelo preditivo supervisionado e
+              assistente local seguro. A visão apresentada não emite diagnóstico definitivo e deve ser usada apenas para
+              demonstração educacional.
             </p>
             <p>{DISCLAIMER}</p>
             <p>API configurada: {API_BASE_URL}</p>

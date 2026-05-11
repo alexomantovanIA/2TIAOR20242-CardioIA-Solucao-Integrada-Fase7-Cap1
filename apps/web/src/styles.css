@@ -75,6 +75,36 @@ footer {
   line-height: 1.5;
 }
 
+.loginHintList {
+  margin: 0;
+  padding-left: 1.25rem;
+  text-align: left;
+  color: #3d4a46;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.loginHintList code {
+  font-size: 0.85rem;
+  background: #eef4f2;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+
+.loginHintDoc {
+  font-size: 0.88rem;
+}
+
+.loginError {
+  margin-bottom: 0;
+}
+
+.topbarActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .primaryButton,
 .iconButton,
 .navItem {
